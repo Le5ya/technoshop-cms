@@ -8,8 +8,15 @@ export const toBase64 = (file) => {
 
 		reader.addEventListener('error', (err) => {
 			reject(err);
-
+		});
 			reader.readAsDataURL(file);
 		})
-	})
+	
+}
+export const currencyFormatRUB = (number) => {
+	return new Intl.NumberFormat('ru-RU', {
+		style: 'currency',
+		currency: 'RUB',
+		maximumFractionDigits: 0,
+	}).format(number)
 }

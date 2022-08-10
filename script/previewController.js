@@ -5,7 +5,7 @@ import { toBase64 } from "./utils";
 	preview.style.display = 'block';
 	preview.src = src;
 }
- const hidePreview = () => {
+ export const hidePreview = () => {
 	preview.style.display = '';
 	preview.src = '';
 }
