@@ -1,27 +1,45 @@
 import { form } from "./elems.js";
- import { hidePreview } from './previewController.js'
-const openModal = (modal, classOpen) => {
-	modal.classList.add(classOpen);
-	
+import { hidePreview } from './previewController.js';
+import { fillingForm } from './formController.js';
+const openModal = () => {
+	if (id) {
+		fillingForm(id);
+	} 
+	modal.classList.add('d-block');	
+
 };
-const closeModal = (modal, classOpen)  =>{
-	modal.classList.remove(classOpen);
+export const closeModal = ()  =>{
+	modal.classList.remove('d-block');
 	form.reset();
 	hidePreview();
 };
 
 
-export const modalController = ({ modal,
+export const modalController = ({
 	btn = modalBtn,
-	classOpen,
-	classClose
+	delegation
 }) => {
-	btn.addEventListener('click', () => {
-		openModal(modal, classOpen);
-	});
+	if (btn) {
+		btn.addEventListener('click', () => {
+			modalTitle.textContent = 'Добавить новый товар';
+			modalSubmitBtn.textContent = 'Добавить товар';
+			openModal();
+		});
+	}
+	if (delegation) {
+		delegation.parent.add('click', ({ target }) => {
+			const goodsRow = target.closest(delegation.target);
+			const targetExclude = target.closest(delegation.targetExclude);
+			if (goodsRow && !targetExclude) {
+				modalTitle.textContent = `Изменить товар #${goodsRow.dataset.id}`;
+				modalSubmitBtn.textContent = 'Изменить товар';
+				openModal(goodsRow.dataset.id)
+			}
+		})
+	}
 	modal.addEventListener('click', ({ target }) => {
-		if (target === modal || target.classList.contains(classClose)) {
-			closeModal(modal, classOpen);
+		if (target === modal || target.classList.contains('btn-close')) {
+			closeModal();
 		}
 	})
 };
